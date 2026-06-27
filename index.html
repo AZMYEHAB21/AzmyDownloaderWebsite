@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="تحميل الفيديوهات والوسائط من YouTube وTikTok وInstagram وFacebook والمزيد باستخدام بوت Telegram احترافي وسريع. مجاني وبدون قيود.">
+    <meta name="keywords" content="تحميل فيديوهات, YouTube downloader, TikTok downloader, Instagram downloader, Facebook downloader, بوت تيليجرام, Telegram bot, downloader, تحميل فيديو, تحميل موسيقى">
+    <meta name="author" content="Azmy Ehab">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#0D1117">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Azmy Bot">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="https://azmy.app">
+    <link rel="alternate" hreflang="ar" href="https://azmy.app">
+    
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_EG">
+    <meta property="og:title" content="Azmy Downloader Bot - تحميل الفيديوهات والوسائط بسهولة">
+    <meta property="og:description" content="بوت تيليجرام احترافي وسريع لتحميل الفيديوهات والموسيقى من جميع المنصات مجاناً وبدون قيود. يدعم YouTube و TikTok و Instagram و Facebook و Pinterest و Twitter">
+    <meta property="og:url" content="https://azmy.app">
+    <meta property="og:image" content="https://azmy.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Azmy Downloader Bot - تحميل الفيديوهات">
+    <meta name="twitter:description" content="بوت تيليجرام احترافي لتحميل الفيديوهات والوسائط من جميع المنصات الشهيرة">
+    <meta name="twitter:image" content="https://azmy.app/twitter-image.png">
+    <meta name="twitter:creator" content="@AzmyBot">
+    
+    <title>Azmy Downloader Bot - تحميل الفيديوهات من YouTube وTikTok وInstagram بسرعة</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #0088ff;
+            --primary-light: #1a9fff;
+            --secondary: #6C63FF;
+            --accent: #00D4FF;
+            --background: #0D1117;
+            --background-light: #161B22;
+            --card-bg: #0F1419;
+            --border: #30363D;
+            --text-primary: #F0F6FC;
+            --text-secondary: #8B949E;
+            --text-tertiary: #6E7681;
+            --success: #00C853;
+            --warning: #FFC107;
+            --danger: #FF5252;
+            --gradient-primary: linear-gradient(135deg, #0088ff 0%, #00D4FF 100%);
+            --gradient-secondary: linear-gradient(135deg, #6C63FF 0%, #8B5CF6 100%);
+            --gradient-dark: linear-gradient(to bottom, #161B22 0%, #0D1117 100%);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        body.light-mode {
+            --background: #FFFFFF;
+            --background-light: #F6F8FA;
+            --card-bg: #FFFFFF;
+            --border: #D0D7DE;
+            --text-primary: #0D1117;
+            --text-secondary: #57606A;
+            --text-tertiary: #6E7681;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.5s ease, pointer-events 0.5s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+        
+        /* Floating Telegram Button */
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(0, 136, 255, 0.3);
+            z-index: 500;
+            transition: all 0.3s ease;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(0, 136, 255, 0.4);
+        }
+        
+        .floating-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+        
+        nav.scrolled {
+            background: rgba(13, 17, 23, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+        }
+        
+        .hamburger-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .hamburger-menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.95);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            z-index: 99;
+            padding: 2rem 0;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+        
+        .mobile-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .mobile-menu a:hover {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .hero-phone {
+                display: block !important;
+                height: auto;
+                margin-top: 2rem;
+            }
+            
+            .phone-mockup {
+                width: 180px;
+                height: 380px;
+                border-radius: 30px;
+                border: 8px solid #000;
+            }
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 70vh;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%), var(--background);
+            position: relative;
+            overflow: hidden;
+            padding: 120px 2rem 2rem;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 136, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite 5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(30px, -30px); }
+            66% { transform: translate(-20px, 20px); }
+        }
+        
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            justify-items: center;
+            position: relative;
+            z-index: 10;
+            padding: 0 2rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 136, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0, 136, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 136, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .hero-phone {
+            position: relative;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .phone-mockup {
+            width: 280px;
+            height: 580px;
+            background: var(--card-bg);
+            border-radius: 40px;
+            border: 12px solid #000;
+            box-shadow: 0 30px 80px rgba(0, 136, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            animation: phone-float 3s ease-in-out infinite;
+        }
+        
+        @keyframes phone-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0088ff 0%, #00D4FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 2rem;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .hero-phone {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .phone-mockup {
+                width: 220px;
+                height: 450px;
+                border-radius: 30px;
+                border: 8px solid var(--border);
+            }
+            
+            .phone-screen {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Platforms Section */
+        .platforms {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+        
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .platform-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .platform-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .platform-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .platform-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .platform-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .platform-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 136, 255, 0.1);
+        }
+        
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.1) 0%, transparent 100%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+        
+        .feature-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 136, 255, 0.1);
+        }
+        
+        /* Process Section */
+        .process {
+            padding: 5rem 2rem;
+            background: var(--background);
+        }
+        
+        .process-timeline {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .process-step {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .process-step h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .process-step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* FAQ Section */
+        .faq {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-search {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .faq-search input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .faq-search input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+            background: var(--card-bg);
+        }
+        
+        .faq-question:hover {
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.05) 0%, rgba(0, 212, 255, 0.02) 100%);
+        }
+        
+        .faq-question h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .faq-toggle {
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            border-top: 1px solid var(--border);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+        
+        .faq-answer-content {
+            padding: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 2rem;
+            background: var(--background);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .testimonial-stars {
+            color: var(--warning);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .testimonial-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .author-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        
+        .author-info p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        /* Roadmap Section */
+        .roadmap {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+        
+        .roadmap-items {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .roadmap-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            left: 29px;
+            top: 60px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: var(--border);
+        }
+        
+        .roadmap-item:last-child::before {
+            display: none;
+        }
+        
+        .roadmap-dot {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .roadmap-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        .roadmap-version {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .roadmap-description {
+            color: var(--text-secondary);
+        }
+        
+        /* Blog Section */
+        .blog {
+            padding: 5rem 2rem;
+            background: var(--background);
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .blog-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 136, 255, 0.1);
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+        
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .contact-box {
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+        }
+        
+        .contact-box h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .contact-box p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 136, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .contact-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #0a0e17 0%, #0D1117 100%);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .footer-section h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            text-align: center;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 136, 255, 0.1);
+            border-radius: 50%;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Coming Soon Section */
+        .coming-soon {
+            padding: 5rem 2rem;
+            background: var(--background);
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        
+        .coming-soon-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .coming-soon-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .store-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .store-button {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.75rem;
+            background: rgba(0, 136, 255, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 200px;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .store-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 136, 255, 0.3);
+        }
+        
+        .store-icon {
+            font-size: 1.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .coming-soon {
+                padding: 3rem 1.5rem;
+            }
+            
+            .coming-soon-title {
+                font-size: 1.8rem;
+            }
+            
+            .store-buttons {
+                gap: 1rem;
+                flex-direction: column;
+            }
+            
+            .store-button {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .scale-in {
+            animation: scaleIn 0.6s ease-in;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .platforms-grid,
+            .stats-grid,
+            .features-grid,
+            .testimonials-grid,
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .floating-btn {
+                bottom: 20px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .roadmap-item {
+                gap: 1.5rem;
+            }
+            
+            .roadmap-dot {
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        /* Utility Classes */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">🚀 Azmy</div>
+            <ul class="nav-links">
+                <li><a href="#platforms">المنصات</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#faq">الأسئلة</a></li>
+                <li><a href="#contact">تواصل</a></li>
+            </ul>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <button class="hamburger-menu" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#platforms">المنصات</a>
+        <a href="#features">المميزات</a>
+        <a href="#faq">الأسئلة</a>
+        <a href="#contact">تواصل</a>
+    </div>
+    
+    <!-- Floating Telegram Button -->
+    <button class="floating-btn" id="floatingBtn" title="Open Telegram">
+        <i class="fab fa-telegram"></i>
+    </button>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content fade-in">
+                <h1>حمّل الفيديوهات والوسائط من أي مكان</h1>
+                <p>بوت تيليجرام احترافي وسريع لتحميل الفيديوهات والموسيقى من جميع المنصات مجاناً وبدون قيود</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="openBotBtn">
+                        <i class="fab fa-telegram"></i>
+                        افتح البوت
+                    </button>
+                    <button class="btn btn-secondary" id="joinChannelBtn">
+                        <i class="fas fa-users"></i>
+                        انضم للقناة
+                    </button>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+    </section>
+    
+    <!-- Platforms Section -->
+    <section class="platforms" id="platforms">
+        <div class="section-container">
+            <div class="section-title fade-in">
+                <h2>المنصات المدعوم</h2>
+                <p>نحن ندعم تحميل من جميع المنصات الشهيرة</p>
+            </div>
+            <div class="platforms-grid">
+                <div class="platform-card scale-in">
+                    <i class="fab fa-youtube platform-icon" style="color: #FF0000;"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card scale-in">
+                    <i class="fab fa-tiktok platform-icon" style="color: #000000;"></i>
+                    <h3>TikTok</h3>
+                </div>
+                <div class="platform-card scale-in">
+                    <i class="fab fa-instagram platform-icon" style="color: #E4405F;"></i>
+                    <h3>Instagram</h3>
+                </div>
+                <div class="platform-card scale-in">
+                    <i class="fab fa-facebook platform-icon" style="color: #1877F2;"></i>
+                    <h3>Facebook</h3>
+                </div>
+                <div class="platform-card scale-in">
+                    <i class="fab fa-x-twitter platform-icon"></i>
+                    <h3>X (Twitter)</h3>
+                </div>
+                <div class="platform-card scale-in">
+                    <i class="fas fa-image platform-icon" style="color: #E1306C;"></i>
+                    <h3>Pinterest</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-title fade-in">
+                <h2>المميزات المتقدمة</h2>
+                <p>كل ما تحتاجه للتحميل بكفاءة وسهولة</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card scale-in">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <h3>سرعة فائقة</h3>
+                    <p>تحميل بأسرع سرعة ممكنة مع معالجة فورية للطلبات</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-film feature-icon"></i>
+                    <h3>أعلى جودة</h3>
+                    <p>احصل على أفضل جودة للفيديوهات والموسيقى</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-gift feature-icon"></i>
+                    <h3>مجاني تماماً</h3>
+                    <p>جميع الخدمات مجانية بدون أي رسوم أو اشتراكات</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-lock feature-icon"></i>
+                    <h3>آمن وموثوق</h3>
+                    <p>ملفاتك آمنة تماماً ولا يتم حفظ أي بيانات شخصية</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-infinity feature-icon"></i>
+                    <h3>بلا حدود</h3>
+                    <p>تحميل بدون قيود أو حد أقصى للملفات</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-mobile-alt feature-icon"></i>
+                    <h3>سهل الاستخدام</h3>
+                    <p>واجهة بسيطة وسهلة حتى للمبتدئين</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-circle-check feature-icon"></i>
+                    <h3>تحديثات تلقائية</h3>
+                    <p>البوت يتحدث تلقائياً لإضافة مميزات جديدة</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-headphones feature-icon"></i>
+                    <h3>دعم كامل</h3>
+                    <p>فريق الدعم متاح 24/7 للإجابة على استفساراتك</p>
+                </div>
+                <div class="feature-card scale-in">
+                    <i class="fas fa-layer-group feature-icon"></i>
+                    <h3>جميع الصيغ</h3>
+                    <p>يدعم MP4، MP3، و صيغ أخرى من جميع المنصات</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <div class="section-container">
+            <div class="section-title fade-in">
+                <h2>خطوات التحميل البسيطة</h2>
+                <p>احصل على ملفاتك في 6 خطوات سهلة فقط</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-step scale-in">
+                    <div class="step-number">1</div>
+                    <h3>افتح البوت</h3>
+                    <p>ابدأ محادثة مع بوتنا على تيليجرام</p>
+                </div>
+                <div class="process-step scale-in">
+                    <div class="step-number">2</div>
+                    <h3>انضم للقناة</h3>
+                    <p>انضم لقناتنا الرسمية للحصول على التحديثات</p>
+                </div>
+                <div class="process-step scale-in">
+                    <div class="step-number">3</div>
+                    <h3>أرسل الرابط</h3>
+                    <p>أرسل رابط الفيديو أو الموسيقى للبوت</p>
+                </div>
+                <div class="process-step scale-in">
+                    <div class="step-number">4</div>
+                    <h3>اختر نوعك</h3>
+                    <p>اختر بين تحميل الفيديو أو المقطع الصوتي</p>
+                </div>
+                <div class="process-step scale-in">
+                    <div class="step-number">5</div>
+                    <h3>حدد الجودة</h3>
+                    <p>اختر الجودة التي تريدها من الخيارات المتاحة</p>
+                </div>
+                <div class="process-step scale-in">
+                    <div class="step-number">6</div>
+                    <h3>ابدأ التحميل</h3>
+                    <p>اضغط على زر التحميل واستمتع بملفك</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="section-container">
+            <div class="faq-container">
+                <div class="section-title fade-in">
+                    <h2>الأسئلة الشائعة</h2>
+                    <p>إجابات على أسئلتك الأكثر شيوعاً</p>
+                </div>
+                
+                <div class="faq-search">
+                    <input type="text" id="faqSearch" placeholder="ابحث عن سؤالك...">
+                </div>
+                
+                <div id="faqList">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>هل البوت مجاني؟</h3>
+                            <span class="faq-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                نعم، البوت مجاني تماماً! جميع الخدمات مجانية بدون أي رسوم أو اشتراكات. ما عليك سوى تشغيل البوت والبدء في التحميل.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>ما المنصات المدعومة؟</h3>
+                            <span class="faq-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                ندعم تحميل من YouTube و TikTok و Instagram و Facebook و Twitter و Pinterest وغيرها من المنصات الشهيرة.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>ما الجودات المتاحة؟</h3>
+                            <span class="faq-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                نوفر جودات متعددة من 240p إلى 4K بناءً على توفرها في المنصة الأصلية. يمكنك اختيار الجودة التي تريدها قبل التحميل.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>هل يمكن تحميل موسيقى؟</h3>
+                            <span class="faq-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                نعم بالتأكيد! يمكنك تحميل موسيقى MP3 بجودة عالية من جميع المنصات. البوت يستخرج الصوت تلقائياً من الفيديوهات.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>هل هناك حد أقصى للتحميل؟</h3>
+                            <span class="faq-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                لا يوجد حد أقصى! يمكنك تحميل عدد غير محدود من الملفات بدون أي قيود أو انتظار بين التحميلات.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>هل بيانتي آمنة؟</h3>
+                            <span class="faq-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                نعم، بيانتك آمنة تماماً! لا نحفظ أي معلومات شخصية أو بيانات المستخدمين. كل شيء آمن وخاص.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="section-container">
+            <div class="section-title fade-in">
+                <h2>آراء المستخدمين</h2>
+                <p>ما يقول المستخدمون عن بوتنا</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card scale-in">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"بوت رائع جداً! سريع جداً وسهل الاستخدام. أفضل بوت لتحميل الفيديوهات على تيليجرام."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">أ</div>
+                        <div class="author-info">
+                            <h4>أحمد محسن</h4>
+                            <p>@user1</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card scale-in">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"استخدمت البوت لأسابيع والخدمة ممتازة. التحميلات سريعة والجودة عالية جداً."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ف</div>
+                        <div class="author-info">
+                            <h4>فاطمة علي</h4>
+                            <p>@user2</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card scale-in">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"الدعم ممتاز والبوت موثوق. أنا رافقة مع البوت منذ البداية وأنصح به للجميع."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">م</div>
+                        <div class="author-info">
+                            <h4>يوسف ايهاب</h4>
+                            <p>@user3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container fade-in">
+            <div class="contact-box">
+                <h2>تواصل معنا</h2>
+                <p>هل لديك استفسار؟ نحن هنا للمساعدة. تواصل معنا عبر أي من الطرق التالية</p>
+                
+                <div class="contact-links">
+                    <a href="https://t.me/AzmyEhab" target="_blank" class="contact-link">
+                        <i class="fab fa-telegram"></i>
+                        الدعم
+                    </a>
+                    <a href="mailto:azmyehab610@gmail.com" class="contact-link">
+                        <i class="fas fa-envelope"></i>
+                        بريد إلكتروني
+                    </a>
+                    <a href="https://x.com/AZMYEHAB21" target="_blank" class="contact-link">
+                        <i class="fab fa-x-twitter"></i>
+                        تويتر
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>عن البوت</h3>
+                <ul>
+                    <li><a href="#hero">الرئيسية</a></li>
+                    <li><a href="#features">المميزات</a></li>
+                    <li><a href="#roadmap">الخريطة</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>المشروع</h3>
+                <ul>
+                   
+                    <li><a href="#faq">الأسئلة الشائعة</a></li>
+                    <li><a href="#contact">تواصل</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>التطوير</h3>
+                <ul>
+                    <li><a href="https://t.me/AzmyEhab" target="_blank">المطور</a></li>
+                    <li><a href="#contact">الدعم التقني</a></li>
+                    <li><a href="#contact">الاقتراحات</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            
+            <p class="footer-text">© <span id="year">2024</span> Azmy Downloader Bot. جميع الحقوق محفوظة ❤️</p>
+        </div>
+    </footer>
+    
+    <script>
+        // ==================== DOM Elements ====================
+        const loadingScreen = document.querySelector('.loading-screen');
+        const scrollProgressBar = document.querySelector('.scroll-progress');
+        const floatingBtn = document.getElementById('floatingBtn');
+        const openBotBtn = document.getElementById('openBotBtn');
+        const joinChannelBtn = document.getElementById('joinChannelBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const nav = document.querySelector('nav');
+        const faqItems = document.querySelectorAll('.faq-item');
+        const faqSearch = document.getElementById('faqSearch');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        // ==================== Theme Management ====================
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        function initTheme() {
+            if (currentTheme === 'light') {
+                document.body.classList.add('light-mode');
+                themeToggle.textContent = '☀️';
+            }
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeToggle.textContent = isLight ? '☀️' : '🌙';
+        });
+        
+        // ==================== Dynamic Year ====================
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // ==================== Hamburger Menu ====================
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+        
+        // ==================== Loading Screen ====================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 800);
+        });
+        
+        // ==================== Scroll Progress Bar ====================
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgressBar.style.width = scrollPercent + '%';
+            
+            // Nav background on scroll
+            if (scrollTop > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+        
+        // ==================== Buttons ====================
+        const telegramBotUrl = 'https://t.me/Azmy_downloader_bot';
+        const telegramChannelUrl = 'https://t.me/azmyehab21';
+        
+        floatingBtn.addEventListener('click', () => {
+            window.open(telegramBotUrl, '_blank');
+        });
+        
+        openBotBtn.addEventListener('click', () => {
+            window.open(telegramBotUrl, '_blank');
+        });
+        
+        joinChannelBtn.addEventListener('click', () => {
+            window.open(telegramChannelUrl, '_blank');
+        });
+        
+        // ==================== FAQ Accordion ====================
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Close other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // FAQ Search
+        faqSearch.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question h3').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+        
+        // ==================== Statistics API Integration ====================
+        const statsElements = {
+            users: document.getElementById('usersCount'),
+            downloads: document.getElementById('downloadsCount'),
+            videos: document.getElementById('videosCount'),
+            audios: document.getElementById('audiosCount'),
+            today: document.getElementById('todayCount'),
+            status: document.getElementById('botStatus')
+        };
+        
+        async function fetchStatistics() {
+            try {
+                const response = await fetch('/api/stats');
+                if (!response.ok) throw new Error('API Error');
+                
+                const data = await response.json();
+                
+                // Animate numbers
+                animateCounter(statsElements.users, parseInt(data.users) || 0);
+                animateCounter(statsElements.downloads, parseInt(data.downloads) || 0);
+                animateCounter(statsElements.videos, parseInt(data.videos) || 0);
+                animateCounter(statsElements.audios, parseInt(data.audios) || 0);
+                animateCounter(statsElements.today, parseInt(data.today) || 0);
+                
+                // Update status
+                const isOnline = data.status === 'online';
+                statsElements.status.classList.toggle('offline', !isOnline);
+                statsElements.status.innerHTML = `<span class="status-dot"></span><span>${isOnline ? 'متصل' : 'غير متصل'}</span>`;
+            } catch (error) {
+                console.log('[v0] Stats API Error:', error);
+                // Set demo values on error
+                [statsElements.users, statsElements.downloads, statsElements.videos, statsElements.audios].forEach(el => {
+                    animateCounter(el, Math.floor(Math.random() * 100000) + 50000);
+                });
+            }
+        }
+        
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = formatNumber(Math.floor(current));
+            }, 30);
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+        
+        // Fetch stats on load and every 10 seconds
+        fetchStatistics();
+        setInterval(fetchStatistics, 10000);
+        
+        // ==================== Intersection Observer for Animations ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        // ==================== Smooth Scroll ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+        
+        // ==================== Initialize ====================
+        initTheme();
+    </script>
+</body>
+</html>
